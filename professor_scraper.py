@@ -200,8 +200,11 @@ final_df.grad_school = map(lambda x: x.strip(' '), final_df.grad_school)
 # Replace nan with None
 final_df = final_df.replace({'nan': None})
 
+# Import file containing mapping of schools to code
 schools = pd.read_excel('schools.xls')
 
+# Find if any of the grad schools where faculty got their degrees can be found in 
+# the schools table, and append the code to the dataframe. 
 school_code = []
 for grad_school in final_df.grad_school:
     internal_school = None
