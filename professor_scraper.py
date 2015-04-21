@@ -1,5 +1,3 @@
-
-
 import requests
 import lxml
 from lxml import etree
