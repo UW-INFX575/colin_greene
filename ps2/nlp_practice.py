@@ -125,7 +125,7 @@ individual_files_and_counts = dict(zip(individual_file_names, individual_counts)
 
 # Create 3 files with summary counts for unigrams, bigrams, and trigrams accross all documents
 for key in all_n_files_and_counts:
-    ofile  = open(key, "wb")
+    ofile  = open('ngramcounts/'+key, "wb")
     writer = csv.writer(ofile, delimiter=',')
 
     for row in all_n_files_and_counts[key]:
@@ -134,14 +134,14 @@ for key in all_n_files_and_counts:
 
 # Create 30 files with counts of unigrams, bigrams, and trigrams for each document
 for key in individual_files_and_counts:
-    ofile  = open(key, "wb")
+    ofile  = open('ngramcounts/'+key, "wb")
     writer = csv.writer(ofile, delimiter=',')
 
     for row in individual_files_and_counts[key]:
         writer.writerow(row)
     ofile.close()
 
-print 'Documents saved to current working directory.'
+print 'Documents saved to ngramcounts folder in current working directory.'
 
 
 
