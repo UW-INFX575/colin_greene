@@ -142,10 +142,3 @@ for key in individual_files_and_counts:
     ofile.close()
 
 print 'Documents saved to ngramcounts folder in current working directory.'
-
-
-
-
-
-
-
