@@ -1,0 +1,6 @@
+# colin_greene
+INFX 575 Assignment Submissions
+
+The purpose of this assignment was to extract frequency counts of word stems for each of the 10 files provided by the professor. While the NLTK package was central to this task, I also used requests, csv, and itertools for some peripheral needs. I used several NLTK functions, but also chose to take a more manual route for some tasks for the sake of learning and experimentation. The first step after acquiring the files was to extract stop words and any non-alpha characters from each of the files. I did this by tokenizing each file, using regular expressions to remove any non-alpha characters, and then removing any word that appears in the NLTK stop word corpus. With the NLTK port stemmer module, I extracted the stems of each word, and then with the NLTK n-grams counter I created three new lists for each of the ten files containing the unigrams, bigrams, and trigrams for each file. For each list of unigrams, bigrams, and trigrams, I conducted a frequency count which resulted in three frequency counts for each of the 10 original files. Finally, I created three files to summarize the frequency of all unigrams, bigrams, and trigrams respectively across all 10 files. 
+
+In order to create the authenticated S3 request, I used the S3Connection package from the boto library in python. 
