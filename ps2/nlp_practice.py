@@ -49,36 +49,47 @@ def extract_splits(document):
 #   }
 def get_n_gram_counts(document, min_n=1, max_n=3):
     n_grams_count = {}
-    for i in xrange(min_n, max_n+1):
-        n_grams = [' '.join(word) for word in ngrams(document,i)]
+    for n in xrange(min_n, max_n+1):
+        n_grams = [' '.join(word) for word in ngrams(document,n)]
         counts = []
         for word in set(n_grams):
             counts.append([word, n_grams.count(word)])
         counts = sorted(counts, key=lambda count: count[1], reverse = True)
-        n_grams_count[i] = counts
+        n_grams_count[n] = counts
     return n_grams_count
 
 # Takes list of lists with uniformly structured rows as input 
-# Groups by specified column (column zero by default) and applies an aggregate function (sum by default)
+# Groups by specified column (column zero by default) 
+# and applies an aggregate function (sum by default)
 # to another specified column (column one by default) 
 # Returns a sorted list of the grouped and aggregated results
-def group_and_agg(list_of_lists, agg_func=sum, initial_dict_value=0, group_column=0, agg_column=1):
+def group_and_agg(
+        list_of_lists, 
+        agg_func=sum, 
+        initial_dict_value=0, 
+        group_column=0, 
+        agg_column=1):
 
     # Get set of unique values from the first column
     unique = set([line[group_column] for line in list_of_lists])
     
     # Create dictionary with unique set as the keys and 0 as values
-    aggregates = dict((key,initial_dict_value) for key in unique)
+    aggs = dict((key,initial_dict_value) for key in unique)
     
-    # For each line in the list of lists, add the count to the value in the dict
+    # For each line in the list of lists, 
+    # add the count to the value in the dict
     for line in list_of_lists:
-        aggregates[line[group_column]] = agg_func([aggregates[line[group_column]], line[agg_column]])
+        aggs[line[group_column]] = agg_func(
+                                            [aggs[line[group_column]], 
+                                            line[agg_column]]
+                                            )
     
     # Convert dict to a list sorted by the word counts 
-    aggregates = [[key, aggregates[key]] for key in sorted(aggregates, key=aggregates.get, reverse=True)]
-    return aggregates
+    aggs = [[k, aggs[k]] for k in sorted(aggs, key=aggs.get, reverse=True)]
+    return aggs
 
-# Convert string to all lower case, remove all non-alpha characters and convert to a list
+# Convert string to all lower case, 
+# remove all non-alpha characters and convert to a list
 document_arrays = map(lambda x: tokenizer.tokenize(x.lower()), documents)
 
 # Remove stop words from each list
@@ -87,12 +98,13 @@ document_arrays = map(remove_stops, document_arrays)
 # Extract splits from each list
 document_arrays = map(extract_splits, document_arrays)
 
-# Create a list of 10 dicts, each of which corresponds to a different document and
-# each of which contains 3 lists containing unigram, bigram, and trigram counts
+# Create a list of 10 dicts, each of which corresponds to 
+# a different document and each of which contains 3 lists 
+# containing unigram, bigram, and trigram counts
 n_grams = map(get_n_gram_counts, document_arrays)
 
-# Create a list of len 3 which groups all unigram, bigram, and trigram from individual documents 
-# into three seperate lists
+# Create a list of len 3 which groups all unigram, bigram, and trigram 
+# from individual documents into three seperate lists
 grouped_by_n = []
 for n in xrange(1,4):
     temp_list = []
@@ -121,9 +133,13 @@ for i in xrange(10):
         individual_file_names.append(str(extension_number + i) + n + '.csv')
 
 # Create dict matching each file name to its contents        
-individual_files_and_counts = dict(zip(individual_file_names, individual_counts))
+individual_files_and_counts = dict(zip(
+                                    individual_file_names, 
+                                    individual_counts
+                                    ))
 
-# Create 3 files with summary counts for unigrams, bigrams, and trigrams accross all documents
+# Create 3 files with summary counts for 
+# unigrams, bigrams, and trigrams accross all documents
 for key in all_n_files_and_counts:
     ofile  = open('ngramcounts/'+key, "wb")
     writer = csv.writer(ofile, delimiter=',')
@@ -132,7 +148,8 @@ for key in all_n_files_and_counts:
         writer.writerow(row)
     ofile.close()
 
-# Create 30 files with counts of unigrams, bigrams, and trigrams for each document
+# Create 30 files with counts of unigrams, 
+# bigrams, and trigrams for each document
 for key in individual_files_and_counts:
     ofile  = open('ngramcounts/'+key, "wb")
     writer = csv.writer(ofile, delimiter=',')
