@@ -1,7 +1,7 @@
 from boto.s3.connection import S3Connection
 
 # Keys
-access_key = 'insert_key_here'
+access_key = 'insert_access_key_here'
 secret_key = 'insert_secret_key_here'
 
 # Create a connection to S3 using the keys from above
@@ -20,7 +20,10 @@ unigram_summary = 'ngramcounts/all_unigrams.csv'
 # Generate a key for the file 
 key = bucket.get_key(unigram_summary) 
 
-# URL that makes link available for 24 hours
-url = key.generate_url(86400) 
+# URL that makes link available for 3 weeks
+url = key.generate_url(86400*21) 
 
-print url
+f = open('protected_url.txt', 'w')
+
+f.write(url)
+f.close()
