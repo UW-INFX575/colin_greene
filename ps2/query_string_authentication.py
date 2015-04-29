@@ -1,13 +1,18 @@
 from boto.s3.connection import S3Connection
 
-# Keys
-access_key = 'insert_access_key_here'
-secret_key = 'insert_secret_key_here'
+# Import keys into a dict from txt document
+amazon_keys = {}
+with open('../keys.txt', 'r') as f:
+        for line in f:
+            line = line.strip()
+            splitLine = line.split(',')
+            amazon_keys[splitLine[0]] = splitLine[-1]
+
 
 # Create a connection to S3 using the keys from above
 conn = S3Connection(
-        aws_access_key_id = access_key,
-        aws_secret_access_key = secret_key,
+        aws_access_key_id = amazon_keys['access_key'],
+        aws_secret_access_key = amazon_keys['secret_key'],
         is_secure=False
         )
 
